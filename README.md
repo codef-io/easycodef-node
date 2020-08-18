@@ -19,7 +19,7 @@ easycodef-node는 CODEF API 연동 개발을 돕는 라이브러리 유틸입니
   
 Using npm:
 
-$ npm install essyCodef-node
+$ npm install easycodef-node
 
 
 # Use it!

@@ -1,0 +1,36 @@
+{
+  "name": "easycodef-node",
+  "version": "1.0.0",
+  "description": "CODEF easyCodef-node",
+  "main": "index.js",
+  "scripts": {
+    "test": "CODEF easyCodef-node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codef-io/easycodef-node"
+  },
+  "keywords": [
+    "CODEF",
+    "easyCodef",
+    "easyCodef-node"
+  ],
+  "homepage": "https://developer.codef.io/",
+  "author": {
+    "name": "CODEF corp.",
+    "email": "tech@codef.io",
+    "url": "https://codef.io/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "hashmap": "^2.4.0",
+    "https": "^1.0.0",
+    "request": "^2.88.2",
+    "url-parse": "^1.4.7",
+    "urlencode": "^1.1.0"
+  },
+  "devDependencies": {
+    "prettier": "2.0.5"
+  }
+}

@@ -1,0 +1,12 @@
+#npm
+node_modules
+test/
+.npmignore
+
+#dev
+.gitignore
+
+# GIT
+.git
+
+.DS_Store
