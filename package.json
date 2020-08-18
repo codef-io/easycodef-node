@@ -4,7 +4,7 @@
   "description": "CODEF easyCodef-node",
   "main": "index.js",
   "scripts": {
-    "test": "CODEF easyCodef-node"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "crypto": "^1.0.1",
     "hashmap": "^2.4.0",
     "https": "^1.0.0",
+    "mocha": "^8.1.1",
     "request": "^2.88.2",
     "url-parse": "^1.4.7",
     "urlencode": "^1.1.0"
