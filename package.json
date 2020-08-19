@@ -4,7 +4,7 @@
   "description": "CODEF easyCodef-node",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha --timeout 10000"
   },
   "repository": {
     "type": "git",
