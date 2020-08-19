@@ -2,9 +2,16 @@
   "name": "easycodef-node",
   "version": "1.0.0",
   "description": "CODEF easyCodef-node",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "mocha --timeout 10000"
+    "test": "mocha --timeout 10000 test/**/*.ts -r ts-node/register",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test"
   },
   "repository": {
     "type": "git",
@@ -32,6 +39,10 @@
     "urlencode": "^1.1.0"
   },
   "devDependencies": {
-    "prettier": "2.0.5"
+    "@types/mocha": "^8.0.3",
+    "@types/request": "^2.48.5",
+    "prettier": "2.0.5",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
   }
 }
