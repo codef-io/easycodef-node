@@ -1,20 +1,20 @@
-const {
-  SERVICE_TYPE_SANDBOX,
-  SERVICE_TYPE_DEMO,
-  SERVICE_TYPE_API,
-} = require('./constant');
+import { SERVICE_TYPE_DEMO, SERVICE_TYPE_API, ServiceType } from './constant';
 
 /**
  *  서비스 별 토큰 관리 클래스
  */
-module.exports = class accessToken {
+export class AccessToken {
+  private sandbox: string;
+  private demo: string;
+  private api: string;
+
   constructor() {
     this.sandbox = '';
     this.demo = '';
     this.api = '';
   }
 
-  setToken(serviceType, accessToken) {
+  setToken(serviceType: ServiceType, accessToken: string) {
     switch (serviceType) {
       case SERVICE_TYPE_API:
         this.api = accessToken;
@@ -27,7 +27,7 @@ module.exports = class accessToken {
     }
   }
 
-  getToken(serviceType) {
+  getToken(serviceType: ServiceType): string {
     switch (serviceType) {
       case SERVICE_TYPE_API:
         return this.api;
@@ -37,4 +37,4 @@ module.exports = class accessToken {
         return this.sandbox;
     }
   }
-};
+}

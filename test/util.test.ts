@@ -1,5 +1,5 @@
-const assert = require('assert');
-const { encryptRSA, encodeToFileString } = require('../lib/util');
+import assert from 'assert';
+import { encryptRSA, encodeToFileString } from '../lib/util';
 
 describe('Util', function () {
   it('can encrypt RSA', function () {
@@ -18,12 +18,12 @@ describe('Util', function () {
       'CqJ2IHKeJoUCzBPY59U/mtIhjPuQmwS' +
       'MLEnLisDWEZMkenO0xJbwOwIDAQAB';
 
-    result = encryptRSA(publicKey, 'hello world');
+    const result = encryptRSA(publicKey, 'hello world');
     assert.ok(!!result);
   });
 
   it('can file encoding to string', async function () {
-    result = await encodeToFileString(__dirname + '/dummy_for_encoding.txt');
+    const result = await encodeToFileString(__dirname + '/dummy_for_encoding.txt');
     assert.equal('aGVsbG8gd29ybGQ=', result);
   });
 });

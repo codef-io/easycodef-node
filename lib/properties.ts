@@ -1,3 +1,5 @@
+import { ServiceType } from './constant';
+
 const {
   SERVICE_TYPE_API,
   SERVICE_TYPE_DEMO,
@@ -8,14 +10,26 @@ const {
   SANDBOX_CLIENT_SECRET,
 } = require('./constant');
 
-class EasycodefProperties {
+export type ClientInfo = {
+  clientID: string;
+  clientSecret: string;
+};
+
+export class Properties {
+  private publicKey: string;
+  private clientID: string;
+  private clientSecret: string;
+  private demoClientID: string;
+  private demoClientSecret: string;
+  private readonly sandboxClientID: string = SANDBOX_CLIENT_ID;
+  private readonly sandboxClientSecret: string = SANDBOX_CLIENT_SECRET;
+
   constructor() {
     this.clientID = '';
     this.clientSecret = '';
     this.demoClientID = '';
     this.demoClientSecret = '';
-    this.sandboxClientID = SANDBOX_CLIENT_ID;
-    this.sandboxClientSecret = SANDBOX_CLIENT_SECRET;
+    this.publicKey = '';
   }
 
   /**
@@ -23,7 +37,7 @@ class EasycodefProperties {
    * @param clientID
    * @param clientSecret
    */
-  setClientInfo(clientID, clientSecret) {
+  setClientInfo(clientID: string, clientSecret: string) {
     this.clientID = clientID;
     this.clientSecret = clientSecret;
   }
@@ -33,7 +47,7 @@ class EasycodefProperties {
    * @param clientID
    * @param clientSecret
    */
-  setDemoClientInfo(clientID, clientSecret) {
+  setDemoClientInfo(clientID: string, clientSecret: string) {
     this.demoClientID = clientID;
     this.demoClientSecret = clientSecret;
   }
@@ -43,7 +57,10 @@ class EasycodefProperties {
    * @param productURLPath
    * @returns {string}
    */
-  getProductRequestURL(serviceType, productURLPath) {
+  getProductRequestURL(
+    serviceType: ServiceType,
+    productURLPath: string
+  ): string {
     switch (serviceType) {
       case SERVICE_TYPE_API:
         return API_DOMAIN + productURLPath;
@@ -58,15 +75,19 @@ class EasycodefProperties {
    * RSA암호화를 위한 퍼블릭키 설정
    * @param publicKey
    */
-  setPublicKey(publicKey) {
-    this.PUBLIC_KEY = publicKey;
+  setPublicKey(publicKey: string) {
+    this.publicKey = publicKey;
+  }
+
+  getPublicKey(): string {
+    return this.publicKey;
   }
 
   /**
    * 클라이언트 정보 조회
-   * @param {SERVICE_TYPE} serviceType
+   * @param {ServiceType} serviceType
    */
-  getClientInfo(serviceType) {
+  getClientInfo(serviceType: ServiceType): ClientInfo {
     switch (serviceType) {
       case SERVICE_TYPE_API:
         return { clientID: this.clientID, clientSecret: this.clientSecret };
@@ -83,5 +104,3 @@ class EasycodefProperties {
     }
   }
 }
-
-module.exports = EasycodefProperties;

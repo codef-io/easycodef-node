@@ -1,13 +1,13 @@
-const crypto = require('crypto');
-const fs = require('fs');
-const constants = require('constants');
+import crypto from 'crypto';
+import fs from 'fs';
+import constants from 'constants';
 
 /**
  * RSA 암호화
  * @param plainText
  * @returns {*}
  */
-function encryptRSA(publicKey, plainText) {
+export function encryptRSA(publicKey: string, plainText: string): string {
   let bufferToEncrypt = Buffer.from(plainText);
   return crypto
     .publicEncrypt(
@@ -27,7 +27,7 @@ function encryptRSA(publicKey, plainText) {
  * @param filePath
  * @returns {string}
  */
-function encodeToFileString(filePath) {
+export function encodeToFileString(filePath: string): Promise<string> {
   return new Promise((resolve, rejects) => {
     fs.readFile(filePath, (err, buffer) => {
       if (err) {
@@ -39,7 +39,7 @@ function encodeToFileString(filePath) {
   });
 }
 
-module.exports = {
+export default {
   encryptRSA,
   encodeToFileString,
 };

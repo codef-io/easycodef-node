@@ -1,7 +1,19 @@
-const { OAUTH_DOMAIN, GET_TOKEN, REPEAT_COUNT } = require('./constant');
-const easyCodefMsg = require('./messageconstant');
-const easyCodefMsgGetResponse = easyCodefMsg.getResponseMessageConstant;
-const request = require('request');
+import {
+  OAUTH_DOMAIN,
+  GET_TOKEN,
+  REPEAT_COUNT,
+  ServiceType,
+} from './constant';
+import {
+  getResponseMessageConstant,
+  UNAUTHORIZED,
+  FORBIDDEN,
+  NOT_FOUND,
+  SERVER_ERROR,
+} from './messageconstant';
+import request from 'request';
+import { Response } from 'request';
+import { EasyCodef } from './easycodef';
 
 /**
  *  CODEF API 통신요청
@@ -11,7 +23,12 @@ const request = require('request');
  * @param param
  * @returns {Promise<unknown>}
  */
-async function execute(codef, serviceType, productURL, param) {
+export async function execute(
+  codef: EasyCodef,
+  serviceType: ServiceType,
+  productURL: string,
+  param: any
+): Promise<string> {
   // 토큰 셋팅
   await setToken(serviceType, codef);
   // 상품 요청
@@ -28,15 +45,22 @@ async function execute(codef, serviceType, productURL, param) {
 }
 
 /**
- * CODEF 상품 요청
- * @param token
- * @returns {Promise<unknown>}
+ * 코드에프 상품요청
+ * @param serviceType 서비스 타입
+ * @param productURLPath API URL Path
+ * @param codef Easycodef 인스턴스
+ * @param param 요청 파라미터
  */
-function requestProduct(serviceType, productURLPath, codef, param) {
+export function requestProduct(
+  serviceType: ServiceType,
+  productURLPath: string,
+  codef: EasyCodef,
+  param: any
+): Promise<string> {
   return new Promise(function (resolve, reject) {
     let options = createReqProductOptions(serviceType, productURLPath, codef);
     request
-      .post(options, (error, response) => {
+      .post(options, (error: any, response: Response) => {
         if (error) {
           reject(error);
         }
@@ -56,30 +80,34 @@ function requestProduct(serviceType, productURLPath, codef, param) {
 
 /**
  * Response 상태 코드에 따라 에러 메시지 정보 가져오기
- * @param {number} statusCode
+ * @param statusCode http 상태 코드
  */
-function getErrorMsgResult(statusCode) {
+function getErrorMsgResult(statusCode: number): string {
   switch (statusCode) {
     case 401:
-      return easyCodefMsgGetResponse(easyCodefMsg.UNAUTHORIZED);
+      return getResponseMessageConstant(UNAUTHORIZED);
     case 403:
-      return easyCodefMsgGetResponse(easyCodefMsg.FORBIDDEN);
+      return getResponseMessageConstant(FORBIDDEN);
     case 404: // HTTP Status-Code 404: Not Found.
-      return easyCodefMsgGetResponse(easyCodefMsg.NOT_FOUND);
+      return getResponseMessageConstant(NOT_FOUND);
     default:
-      return easyCodefMsgGetResponse(easyCodefMsg.SERVER_ERROR);
+      return getResponseMessageConstant(SERVER_ERROR);
   }
 }
 
 /**
  * 상품 요청 옵션 생성
  *
- * @param {SERVICE_TYPE} serviceType
+ * @param {ServiceType} serviceType
  * @param {string} productURLPath
  * @param {string} token
  */
-function createReqProductOptions(serviceType, productURLPath, codef) {
-  const options = {
+function createReqProductOptions(
+  serviceType: ServiceType,
+  productURLPath: string,
+  codef: EasyCodef
+): any {
+  const options: any = {
     url: codef.getProductRequestURL(serviceType, productURLPath),
     headers: {
       'Content-Type': 'application/json',
@@ -95,7 +123,7 @@ function createReqProductOptions(serviceType, productURLPath, codef) {
   return options;
 }
 
-async function setToken(serviceType, codef) {
+export async function setToken(serviceType: ServiceType, codef: EasyCodef) {
   if (codef.getAccessToken(serviceType)) {
     return;
   }
@@ -103,7 +131,7 @@ async function setToken(serviceType, codef) {
   for (let i = 0; i < REPEAT_COUNT; i++) {
     const token = await requestToken(serviceType, codef);
     if (token) {
-      codef.setAccessToken(token);
+      codef.setAccessToken(serviceType, token);
       break;
     }
   }
@@ -115,7 +143,10 @@ async function setToken(serviceType, codef) {
  * @param codef
  * @returns {Promise<unknown>}
  */
-function requestToken(serviceType, codef) {
+export function requestToken(
+  serviceType: ServiceType,
+  codef: EasyCodef
+): Promise<string> {
   return new Promise((resolve, reject) => {
     let token = codef.getAccessToken(serviceType);
     if (token) {
@@ -128,7 +159,7 @@ function requestToken(serviceType, codef) {
     let options = createReqTokenOptions(clientID, clientSecret);
 
     request
-      .post(options, (err, response) => {
+      .post(options, (err: any, response: Response) => {
         if (err) {
           reject(err);
         }
@@ -149,7 +180,7 @@ function requestToken(serviceType, codef) {
  * @param {string} clientID
  * @param {string} clientSecret
  */
-function createReqTokenOptions(clientID, clientSecret) {
+function createReqTokenOptions(clientID: string, clientSecret: string): any {
   return {
     url: OAUTH_DOMAIN + GET_TOKEN,
     headers: {
@@ -167,7 +198,7 @@ function createReqTokenOptions(clientID, clientSecret) {
  * @param str
  * @returns {string}
  */
-function decodeString(str) {
+function decodeString(str: string): string {
   try {
     return decodeURIComponent(decodeURI(str).replace(/\+/g, ' '));
   } catch (e) {
