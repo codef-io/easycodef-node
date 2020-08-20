@@ -19,7 +19,11 @@ easycodef-node는 CODEF API 연동 개발을 돕는 라이브러리 유틸입니
   
 Using npm:
 
-$ npm install easycodef-node
+$ npm i easycodef-node
+
+또는 
+
+$ npm install git+https://github.com/codef-io/easycodef-node
 
 
 # Use it!
@@ -35,15 +39,15 @@ CODEF API 서비스를 이용하기 위해서는 서비스 이용에 대한 자�
 
 ```node
 //코드에프 가입을 통해 발급 받은 클라이언트 정보 - 데모
-const DEMO_CLIENT_ID = "";
-const DEMO_CLIENT_SECRET = "";
+const DEMO_CLIENT_ID = '';
+const DEMO_CLIENT_SECRET = '';
 
-//코드에프 가입을 통해 발급 받은 클라이언트 정보데- 정식
-const CLIENT_ID = "";
-const CLIENT_SECRET = "";
+// 코드에프 가입을 통해 발급 받은 클라이언트 정보- 정식
+const CLIENT_ID = '';
+const CLIENT_SECRET = '';
 
-//코드에프 가입을 통해 발급 받은 RSA 공개키 정보
-const PUBLIC_KEY = "";
+//	코드에프 가입을 통해 발급 받은 RSA 공개키 정보
+const PUBLIC_KEY = '';
 
 /*
  *#1.쉬운 코드에프 객체 생성
@@ -108,27 +112,27 @@ const accountList = []; // 계정 등록 리스트
 
 //+[인증서]
 const accountCert = {
-  countryCode: "KR",
-  businessType: "BK",
-  clientType: "P",
-  organization: "0004",
-  loginType: "0",
-  certType: "1",
-  keyFile: EasyCodefUtil.encodeToFileString(".../signPri.key"),
-  derFile: EasyCodefUtil.encodeToFileString(".../signCert.der"),
-  password: EasyCodefUtil.encryptRSA(PUBLIC_KEY, "user_password"),
+  countryCode: 'KR',
+  businessType: 'BK',
+  clientType: 'P',
+  organization: '0004',
+  loginType: '0',
+  certType: '1',
+  keyFile: EasyCodefUtil.encodeToFileString('.../.../signPri.key'),
+  derFile: EasyCodefUtil.encodeToFileString('.../.../signCert.der'),
+  password: EasyCodefUtil.encryptRSA(PUBLIC_KEY, 'user_password')
 };
 accountList.push(accountCert);
 
 //+ [아이디]
 const accountIDPWD = {
-  countryCode: "KR",
-  businessType: "BK",
-  clientType: "P",
-  organization: "0045",
-  loginType: "1",
-  id: "user_id",
-  password: EasyCodefUtil.encryptRSA(codef.getPublicKey(), "user_password"),
+  countryCode: 'KR',
+  businessType: 'BK',
+  clientType: 'P',
+  organization: '0081',
+  loginType: '1',
+  id: 'user_id',
+  password: EasyCodefUtil.encryptRSA(PUBLIC_KEY, 'user_password')
 };
 accountList.push(accountIDPWD);
 
@@ -211,14 +215,14 @@ codef.setClientInfo(CLIENT_ID, CLIENT_SECRET);
 
 /* #5.요청 파라미터 설정 - 각 상품별 파라미터를 설정(https://developer.codef.io/products) */
 let param = {
-  connectedId: "9GNB80TmkzNaX-E7zG....",
-  organization: "0309",
-  birthDate : "",
-  inquiryType: "0"
+  connectedId: '9GNB80TmkzNaX-E7zG....',
+  organization: '0309',
+  birthDate : '',
+  inquiryType: '0'
 };
 
 /* #6.코드에프 정보 조회 요청 - 서비스타입(API:정식, DEMO:데모, SANDBOX:샌드박스) */
-const productUrl = "/v1/kr/card/p/account/card-list"; // (예시)개인 보유카드 조회 URL
+const productUrl = '/v1/kr/card/p/account/card-list'; // (예시)개인 보유카드 조회 URL
 codef
   .requestProduct(productUrl, EasyCodefConstant.SERVICE_TYPE_SANDBOX, param)
   .then(function (response) {
@@ -284,12 +288,12 @@ codef.setClientInfo(CLIENT_ID, CLIENT_SECRET);
 const reqIdentityList = [];
 
 const identity1 = {
-  reqIdentity: "3333344444",
+  reqIdentity: '3333344444',
 };
 reqIdentityList.push(identity1);
 
 const identity2 = {
-  reqIdentity: "1234567890",
+  reqIdentity: '1234567890',
 };
 reqIdentityList.push(identity2);
 
@@ -297,11 +301,11 @@ reqIdentityList.push(identity2);
  * #5.요청 파라미터 설정
  */
 let param = {
-  organization: "0004",
+  organization: '0004',
   reqIdentityList: reqIdentityList,
 };
 
-const productUrl = "/v1/kr/public/nt/business/status"; // (예시)사업자등록상태(휴폐업조회) URL
+const productUrl = '/v1/kr/public/nt/business/status'; // (예시)사업자등록상태(휴폐업조회) URL
 
 /*	#6.요청
  *  [서비스 타입 설정]
