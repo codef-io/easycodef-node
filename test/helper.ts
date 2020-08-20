@@ -1,6 +1,6 @@
-const { encryptRSA } = require('../lib/util');
+import { encryptRSA } from '../lib/util';
 
-function createParamForCreateConnectedID() {
+export function createParamForCreateConnectedID(): any {
   const publicKey =
     'MIIBIjANBgkqhkiG9w0BAQ' +
     'EFAAOCAQ8AMIIBCgKCAQEAuhRrVDeMf' +
@@ -32,6 +32,3 @@ function createParamForCreateConnectedID() {
   };
 }
 
-module.exports = {
-  createParamForCreateConnectedID,
-};

@@ -1,5 +1,5 @@
-const assert = require('assert');
-const Easycodef = require('../lib/easycodef');
+import assert from 'assert';
+import { EasyCodef } from '../lib';
 const {
   CREATE_ACCOUNT,
   SERVICE_TYPE_API,
@@ -8,9 +8,9 @@ const {
 } = require('../lib/constant');
 const { createParamForCreateConnectedID } = require('./helper');
 
-describe('Easycodef', function () {
+describe('EasyCodef', function () {
   it('can request product', async function () {
-    codef = new Easycodef();
+    const codef = new EasyCodef();
 
     const param = createParamForCreateConnectedID();
     // 클라이언트 정보 셋팅하지 않았을때
@@ -34,7 +34,7 @@ describe('Easycodef', function () {
   });
 
   it('can sandbox creates account with requestProduct()', async function () {
-    codef = new Easycodef();
+    const codef = new EasyCodef();
     // 샌드박스 클라이언트 정보는 기본 셋팅 되어 있기 때문에
     // 퍼블릭 키만 셋팅하면 된다.
     codef.setPublicKey('public_key');
@@ -49,13 +49,13 @@ describe('Easycodef', function () {
   });
 
   it('can request token', async function () {
-    codef = new Easycodef();
+    const codef = new EasyCodef();
     const data = await codef.requestToken(SERVICE_TYPE_SANDBOX);
     assert.ok(!!data);
   });
 
   it('can get cid list', async function () {
-    codef = new Easycodef();
+    const codef = new EasyCodef();
     codef.setPublicKey('public_key');
     const param = createParamForCreateConnectedID();
     const data = JSON.parse(
@@ -65,7 +65,7 @@ describe('Easycodef', function () {
   });
 
   it('can create account', async function () {
-    codef = new Easycodef();
+    const codef = new EasyCodef();
     codef.setPublicKey('public_key');
     const param = createParamForCreateConnectedID();
     const data = JSON.parse(
@@ -75,7 +75,7 @@ describe('Easycodef', function () {
   });
 
   it('can get account list', async function () {
-    codef = new Easycodef();
+    const codef = new EasyCodef();
     codef.setPublicKey('public_key');
     const param = createParamForCreateConnectedID();
     const data = JSON.parse(
