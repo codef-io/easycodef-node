@@ -32,6 +32,7 @@ export function encodeToFileString(filePath: string): Promise<string> {
     fs.readFile(filePath, (err, buffer) => {
       if (err) {
         rejects(err);
+        return;
       }
 
       resolve(buffer.toString('base64'));
