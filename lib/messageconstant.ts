@@ -58,6 +58,10 @@ export const METHOD_NOT_ALLOWED = createMessageInfo(
   'CF-00405',
   '요청하신 방법(Method)이 잘못되었습니다.'
 );
+export const INVALID_2WAY_INFO = createMessageInfo(
+  'CF-03003',
+  '2WAY 요청 처리를 위한 정보가 올바르지 않습니다. 응답으로 받은 항목을 그대로 2way요청 항목에 포함해야 합니다.'
+);
 export const LIBRARY_SENDER_ERROR = createMessageInfo(
   'CF-09980',
   '통신 요청에 실패했습니다. 응답정보를 확인하시고 올바른 요청을 시도하세요.'

@@ -1,12 +1,13 @@
 import assert from 'assert';
 import { EasyCodef } from '../lib';
-const {
+import {
   CREATE_ACCOUNT,
   SERVICE_TYPE_API,
   SERVICE_TYPE_SANDBOX,
   SERVICE_TYPE_DEMO,
-} = require('../lib/constant');
-const { createParamForCreateConnectedID } = require('./helper');
+} from '../lib/constant';
+import { createParamForCreateConnectedID } from './helper';
+import { INVALID_2WAY_INFO } from '../lib/messageconstant';
 
 describe('EasyCodef', function () {
   it('can request product', async function () {
@@ -82,5 +83,34 @@ describe('EasyCodef', function () {
       await codef.getAccountList(SERVICE_TYPE_SANDBOX, param)
     );
     assert.ok(data.data.accountList.length > 0);
+  });
+
+  it('can check 2way parameter', async function () {
+    const codef = new EasyCodef();
+    codef.setPublicKey('public_key');
+    codef.setClientInfo('client_id', 'client_secret');
+
+    async function tester(param: any) {
+      const data = JSON.parse(
+        await codef.requestCertification('product_url', SERVICE_TYPE_API, param)
+      );
+      assert.equal(data.result.code, INVALID_2WAY_INFO.code);
+    }
+
+    const param = {} as any;
+    tester(param);
+
+    param.is2Way = true;
+    tester(param);
+    param.twoWayInfo = {} as any;
+    tester(param);
+    param.twoWayInfo.jobIndex = 1;
+    tester(param);
+    param.twoWayInfo.threadIndex = 1;
+    tester(param);
+    param.twoWayInfo.jti = 1;
+    tester(param);
+    param.twoWayInfo.twoWayTimestamp = 1;
+    tester(param);
   });
 });

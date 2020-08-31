@@ -13,6 +13,7 @@ import {
   getResponseMessageConstant,
   EMPTY_CLIENT_INFO,
   EMPTY_PUBLIC_KEY,
+  INVALID_2WAY_INFO,
 } from './messageconstant';
 import { execute, requestToken } from './connector';
 
@@ -133,6 +134,40 @@ export class EasyCodef {
   }
 
   /**
+   * 상품 2way 추가인증 요청
+   * @param productURL
+   * @param serviceType
+   * @param param
+   */
+  requestCertification(
+    productURL: string,
+    serviceType: ServiceType,
+    param: any
+  ): Promise<string> {
+    // 1.필수 항목 체크 - 클라이언트 정보
+    if (!this.checkClientInfo(serviceType)) {
+      return new Promise((resolve) =>
+        resolve(getResponseMessageConstant(EMPTY_CLIENT_INFO))
+      );
+    }
+    // 2.필수 항목 체크 - 퍼블릭 키
+    if (!this.getPublicKey()) {
+      return new Promise((resolve) =>
+        resolve(getResponseMessageConstant(EMPTY_PUBLIC_KEY))
+      );
+    }
+
+    // 3. 추가인증 파라미터 필수 입력 체크
+    if (!hasTwoWayInfo(param)) {
+      return new Promise((resolve) => {
+        resolve(getResponseMessageConstant(INVALID_2WAY_INFO));
+      });
+    }
+
+    return execute(this, serviceType, productURL, param);
+  }
+
+  /**
    * 서비스별 (정식/데모/샌드박스)토큰발급 요청
    * @param serviceType
    */
@@ -193,4 +228,29 @@ export class EasyCodef {
   updateAccount(serviceType: ServiceType, param: any): Promise<string> {
     return this.requestProduct(UPDATE_ACCOUNT, serviceType, param);
   }
+}
+
+/**
+ * 2way 상품 요청 시 필수 데이터 존재하는지 확인
+ * @param param
+ */
+function hasTwoWayInfo(param: any): boolean {
+  return (
+    param.is2Way &&
+    param.twoWayInfo &&
+    hasNeedValueInTwoWayInfo(param.twoWayInfo)
+  );
+}
+
+/**
+ * twoWayInfo 정보 내부에 필요한 데이터가 존재하는지 체크
+ * @param twoWayInfo
+ */
+function hasNeedValueInTwoWayInfo(twoWayInfo: any): boolean {
+  return (
+    twoWayInfo.jobIndex &&
+    twoWayInfo.threadIndex &&
+    twoWayInfo.jti &&
+    twoWayInfo.twoWayTimestamp
+  );
 }
