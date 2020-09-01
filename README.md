@@ -107,6 +107,13 @@ Connected ID 발급 이후에는 직접적인 계정 정보 전송 없이 대상
 > **Connected ID를 사용하지 않는 API를 사용하는 경우 계정 관리는 생략하세요.**
 
 ```node
+const {
+  EasyCodef,
+  EasyCodefConstant,
+  EasyCodefUtil,
+} = require('easycodef-node');
+const path = require('path');
+
 // 쉬운 코드에프 객체 생성 및 클라이언트 정보, 퍼블릭키 설정에 관한 #1~#4 단계는 생략.
 
 /*
@@ -123,8 +130,12 @@ const accountCert = {
   organization: '0004',
   loginType: '0',
   certType: '1',
-  keyFile: EasyCodefUtil.encodeToFileString('.../.../signPri.key'),
-  derFile: EasyCodefUtil.encodeToFileString('.../.../signCert.der'),
+  keyFile: EasyCodefUtil.encodeToFileString(
+    path.join(__dirname, 'signPri.key')
+  ),
+  derFile: EasyCodefUtil.encodeToFileString(
+    path.join(__dirname, 'signCert.der')
+  ),
   password: EasyCodefUtil.encryptRSA(PUBLIC_KEY, 'user_password')
 };
 accountList.push(accountCert);
