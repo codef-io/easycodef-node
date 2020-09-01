@@ -1,9 +1,4 @@
-import {
-  OAUTH_DOMAIN,
-  GET_TOKEN,
-  REPEAT_COUNT,
-  ServiceType,
-} from './constant';
+import { OAUTH_DOMAIN, GET_TOKEN, REPEAT_COUNT, ServiceType } from './constant';
 import {
   getResponseMessageConstant,
   UNAUTHORIZED,

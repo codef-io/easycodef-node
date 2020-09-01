@@ -9,9 +9,15 @@
   ],
   "scripts": {
     "test": "mocha --timeout 10000 test/**/*.ts -r ts-node/register",
+    "cleanup": "prettier --config ./prettier.config.js --write ./**/*.ts",
     "build": "tsc",
     "prepare": "npm run build",
     "prepublishOnly": "npm test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run test && npm run cleanup"
+    }
   },
   "repository": {
     "type": "git",
@@ -41,6 +47,7 @@
   "devDependencies": {
     "@types/mocha": "^8.0.3",
     "@types/request": "^2.48.5",
+    "husky": "^4.2.5",
     "prettier": "2.0.5",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"

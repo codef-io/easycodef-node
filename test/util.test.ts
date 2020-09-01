@@ -23,7 +23,9 @@ describe('Util', function () {
   });
 
   it('can file encoding to string', async function () {
-    const result = await encodeToFileString(__dirname + '/dummy_for_encoding.txt');
+    const result = await encodeToFileString(
+      __dirname + '/dummy_for_encoding.txt'
+    );
     assert.equal('aGVsbG8gd29ybGQ=', result);
   });
 });
