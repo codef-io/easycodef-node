@@ -10,7 +10,7 @@ CODEF는 온라인에 흩어진 데이터를 클라이언트 엔진과 웹 API �
 
 
 
-easycodef-node는 CODEF API 연동 개발을 돕는 라이브러리 유틸입니다.  
+`easycodef-node`는 CODEF API 연동 개발을 돕는 라이브러리 유틸입니다.  
 사용을 위해서는 [홈페이지](https://codef.io/) 가입 후 데모/정식 서비스 신청을 통해 자격 증명을 위한 클라이언트 정보 등을 발급받아야 하며 사용 가능한 모든 API의 엔드포인트(은행, 카드, 보험, 증권, 공공, 기타)와 요청/응답 항목은 모두 [개발가이드](https://developer.codef.io/)를 통해 확인할 수 있습니다.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/codef-io/easycodef-node/blob/master/LICENSE)
@@ -20,14 +20,18 @@ easycodef-node는 CODEF API 연동 개발을 돕는 라이브러리 유틸입니
   
 Using npm:
 
+```bash
 $ npm i easycodef-node
-
-또는 
-
-$ npm install git+https://github.com/codef-io/easycodef-node
+```
 
 
 # Use it!
+
+## Quik Start
+아래 가이드는 [easycodef-node-exam](https://github.com/codef-io/easycodef-node-exam)을 기반으로 작성되었으며 샌드박스 서버를 대상으로 즉시 테스트가 가능합니다.
+
+> **샌드박스에서는 필수 요청 파라미터 여부를 체크한 뒤 요청 상품에 따른 예정되어 있는 고정 응답 값을 반환합니다.**  
+> **사용자는 샌드박스를 통해 코드에프 연동에 대한 개발 연습과 상품 별 응답 자료 구조 등을 확인 할 수 있습니다.**
 
 ## 1. 토큰 요청
 
@@ -103,6 +107,13 @@ Connected ID 발급 이후에는 직접적인 계정 정보 전송 없이 대상
 > **Connected ID를 사용하지 않는 API를 사용하는 경우 계정 관리는 생략하세요.**
 
 ```node
+const {
+  EasyCodef,
+  EasyCodefConstant,
+  EasyCodefUtil,
+} = require('easycodef-node');
+const path = require('path');
+
 // 쉬운 코드에프 객체 생성 및 클라이언트 정보, 퍼블릭키 설정에 관한 #1~#4 단계는 생략.
 
 /*
@@ -119,8 +130,12 @@ const accountCert = {
   organization: '0004',
   loginType: '0',
   certType: '1',
-  keyFile: EasyCodefUtil.encodeToFileString('.../.../signPri.key'),
-  derFile: EasyCodefUtil.encodeToFileString('.../.../signCert.der'),
+  keyFile: EasyCodefUtil.encodeToFileString(
+    path.join(__dirname, 'signPri.key')
+  ),
+  derFile: EasyCodefUtil.encodeToFileString(
+    path.join(__dirname, 'signCert.der')
+  ),
   password: EasyCodefUtil.encryptRSA(PUBLIC_KEY, 'user_password')
 };
 accountList.push(accountCert);
@@ -186,10 +201,7 @@ codef
   }
 }
 ```
-계정 등록 이외의 계정 추가, 수정, 삭제 등의 계정 관리 기능과 계정 목록 조회, Connected ID 목록 조회 등 조회 기능은 [계정관리 테스트 패키지](https://github.com/codef-io/easycodef-java/tree/master/src/test/java/io/codef/api/account)에서 확인 할 수 있습니다. 테스트 패키지의 모든 테스트 케이스는 샌드박스 서버를 대상으로 즉시 테스트가 가능합니다. 
-
-> **샌드박스에서는 필수 요청 파라미터 여부를 체크한 뒤 요청 상품에 따른 예정되어 있는 고정 응답 값을 반환합니다.**  
-> **사용자는 샌드박스를 통해 코드에프 연동에 대한 개발 연습과 상품 별 응답 자료 구조 등을 확인 할 수 있습니다.**
+계정 등록 이외의 계정 추가, 수정, 삭제 등의 계정 관리 기능과 계정 목록 조회, Connected ID 목록 조회 등 조회 기능은 `easycodef-node-exam`에서 확인 할 수 있습니다. 
 
 인증서로 계정을 등록하는 경우에는 cert파일, key파일 세트 혹은 pfx파일 2가지 모두를 지원합니다. [개발가이드 계정등록](https://developer.codef.io/cert/account/create)에서 자세한 내용을 확인하세요. 인증서 내보내기/가져오기 등 인증서 릴레이 서버 기능이 필요한 경우 <support@codef.io>로 문의해주시기 바랍니다. 코드에프에서는 계정 관리를 위한 인증서 팝업과 전송 서버를 서비스 하고 있습니다.
 
