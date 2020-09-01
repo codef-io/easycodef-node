@@ -248,8 +248,8 @@ function hasTwoWayInfo(param: any): boolean {
  */
 function hasNeedValueInTwoWayInfo(twoWayInfo: any): boolean {
   return (
-    twoWayInfo.jobIndex &&
-    twoWayInfo.threadIndex &&
+    (twoWayInfo.jobIndex === 0 || twoWayInfo.jobIndex) &&
+    (twoWayInfo.threadIndex === 0 || twoWayInfo.threadIndex) &&
     twoWayInfo.jti &&
     twoWayInfo.twoWayTimestamp
   );
