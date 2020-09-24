@@ -16,6 +16,8 @@ import {
   INVALID_2WAY_INFO,
 } from './messageconstant';
 import { execute, requestToken } from './connector';
+import debug from 'debug';
+const log = debug('test');
 
 /**
  * 코드에프의 쉬운 사용을 위한 유틸 라이브러리 클래스
@@ -172,6 +174,16 @@ export class EasyCodef {
    * @param serviceType
    */
   requestToken(serviceType: ServiceType): Promise<string> {
+    let token = this.getAccessToken(serviceType);
+    if (token) {
+      const parsedToken = parseAccessToken(token);
+      if (checkTokenExpValidity(parsedToken['exp'] as number)) {
+        return new Promise((resolve) => {
+          resolve(token);
+        });
+      }
+    }
+
     return requestToken(serviceType, this);
   }
 
@@ -253,4 +265,26 @@ function hasNeedValueInTwoWayInfo(twoWayInfo: any): boolean {
     twoWayInfo.jti &&
     twoWayInfo.twoWayTimestamp
   );
+}
+
+/**
+ * 토큰 파싱
+ * @param token 액세스토큰
+ */
+function parseAccessToken(token: string): any {
+  const splitResult = token.split(/\./);
+  const base64Str = splitResult[1];
+  const decodedStr = Buffer.from(base64Str, 'base64').toString('utf8');
+
+  return JSON.parse(decodedStr);
+}
+
+/**
+ * 토큰 유효기간 검사
+ * @param exp 토큰 유효기간
+ */
+function checkTokenExpValidity(exp: number): boolean {
+  const now = +new Date();
+  const expMs = exp * 1000;
+  return !(now > expMs || expMs - now < 1000 * 60 * 60);
 }

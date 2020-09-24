@@ -143,11 +143,6 @@ export function requestToken(
   codef: EasyCodef
 ): Promise<string> {
   return new Promise((resolve, reject) => {
-    let token = codef.getAccessToken(serviceType);
-    if (token) {
-      resolve(token);
-      return;
-    }
     // 클라이언트 정보 조회
     const { clientID, clientSecret } = codef.getClientInfo(serviceType);
     // 옵션 셋팅
