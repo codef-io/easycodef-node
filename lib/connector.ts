@@ -29,13 +29,11 @@ export async function execute(
   // 상품 요청
   const result = await requestProduct(serviceType, productURL, codef, param);
 
-  let bodyError = JSON.parse(result).error;
-  if (bodyError === 'invalid_token') {
+  if (result === 'invalid_token') {
     // 액세스 토큰 유효기간 만료시 재 요청
     codef.setAccessToken(serviceType, '');
     return await execute(codef, serviceType, productURL, param);
   }
-
   return result;
 }
 
@@ -65,7 +63,12 @@ export function requestProduct(
         if (response.statusCode === 200) {
           result = response.body ? decodeString(response.body) : response.body;
         } else {
-          result = getErrorMsgResult(response.statusCode);
+          let bodyError = JSON.parse(response.body ? decodeString(response.body) : response.body).error;
+          if (bodyError === 'invalid_token') {
+            result = bodyError;
+          }else {
+            result = getErrorMsgResult(response.statusCode);
+          }
         }
         resolve(result);
       })
