@@ -193,7 +193,7 @@ function createReqTokenOptions(clientID: string, clientSecret: string): any {
  */
 function decodeString(str: string): string {
   try {
-    return decodeURIComponent(decodeURI(str).replace(/\+/g, ' '));
+    return decodeURIComponent(str.replace(/\+/g,' '));
   } catch (e) {
     return unescape(decodeURI(str));
   }
